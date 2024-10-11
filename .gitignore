@@ -1,3 +1,4 @@
 obj/
-kfs/multiboot_header
+kfs/kernel
 kfs.iso
+.vscode
