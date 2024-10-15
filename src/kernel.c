@@ -4,7 +4,8 @@ unsigned int g_char_pos = 0;
 
 void kernel_main()
 {
-	irq_install();
+	gdt_install();
+	idt_install();
 	while (1)
 	{
 		// ...

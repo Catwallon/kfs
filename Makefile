@@ -30,7 +30,7 @@ $(NAME): $(ASM_OBJ) $(C_OBJ)
 	grub-mkrescue --themes="" --install-modules="$(GRUB_MODULES)" -o $@ kfs -- -rm_r $(GRUB_RM)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

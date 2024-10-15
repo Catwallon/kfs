@@ -13,17 +13,18 @@ CHECKSUM equ -(SIGNATURE + FLAGS)
 align 4
 dd SIGNATURE
 dd FLAGS
-dd CHECKSUM 
+dd CHECKSUM
 
 section .bss
-align 16
-stack_bottom:
-	resb 4096
-stack_top:
+	align 16
+	stack_bottom:
+		resb 4096
+	stack_top:
 
-extern kernel_main
 section .text
-global _start
+	extern kernel_main
+	global _start
+
 _start:
 	mov esp, stack_top
 	call kernel_main
