@@ -2,7 +2,7 @@ NAME = kfs.iso
 
 ASM = nasm
 ASMFLAGS = -f elf32
-CC = gcc
+CC = tcc
 CFLAGS = -m32 -ffreestanding -fno-builtin \
 			-fno-exceptions -fno-stack-protector \
 			-nostdlib -nodefaultlibs \

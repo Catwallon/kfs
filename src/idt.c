@@ -5,6 +5,8 @@ static struct idt_ptr idtp;
 __attribute__((aligned(0x10))) 
 static struct idt_entry idt[256];
 
+extern void isr_handler_stub();
+
 void pic_remap()
 {
 	outb(0x20, 0x11);
@@ -28,6 +30,16 @@ void idt_set_gate(unsigned char num, uint32_t base, uint16_t sel, unsigned char 
 	idt[num].flags = flags;
 }
 
+void common_stub(uint32_t interrupt_number)
+{
+	if (interrupt_number == 32)
+		timer_handler();
+	else if (interrupt_number == 33)
+		keyboard_handler();
+	else
+		generic_handler();
+}
+
 void idt_install()
 {
 	pic_remap();
@@ -35,13 +47,6 @@ void idt_install()
 	idtp.base = (uint32_t)&idt;
 	asm volatile("lidt %0" : : "m" (idtp));
 	for (int i = 0; i < 256; i++)
-	{
-		if (i == 32)
-			idt_set_gate(i, (uint32_t)timer_handler, 0x08, 0x8E);
-		else if (i == 33)
-			idt_set_gate(i, (uint32_t)keyboard_handler, 0x08, 0x8E);
-		else
-			idt_set_gate(i, (uint32_t)generic_handler, 0x08, 0x8E);	
-	}
+		idt_set_gate(i, (uint32_t)isr_handler_stub, 0x08, 0x8E);
 	asm volatile ("sti");
 }
